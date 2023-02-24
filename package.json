@@ -1,0 +1,12 @@
+{
+  "name": "daily-xkcd",
+  "version": "1.0.0",
+  "description": "A simple Discord bot to get an xkcd comic per day, or on request.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["Discord", "Bot"],
+  "author": "Daan Faber",
+  "license": "MIT"
+}
