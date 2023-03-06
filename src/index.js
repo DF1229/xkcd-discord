@@ -1,8 +1,10 @@
+const log = require('./lib/logger');
+log.info('Starting up...');
+
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+const { Client, Collection, GatewayIntentBits } = require('discord.js');
 require('dotenv').config({ path: '../.env'});
-const log = require('./lib/logger');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
