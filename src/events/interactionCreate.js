@@ -4,7 +4,7 @@ const log = require('../lib/logger');
 module.exports = {
     name: Events.InteractionCreate,
     once: false,
-    async execute() {
+    async execute(interaction) {
         if (!interaction.isChatInputCommand()) return;
 
         const command = interaction.client.commands.get(interaction.commandName);
