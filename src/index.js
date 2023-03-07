@@ -5,9 +5,9 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 require('dotenv').config({ path: '../.env'});
+require('./lib/db/database').connect();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-
 client.commands = new Collection();
 
 const commandsPath = path.join(__dirname, 'commands');
