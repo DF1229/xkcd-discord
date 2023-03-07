@@ -7,19 +7,18 @@ module.exports = {
         .setName('info')
         .setDescription('Get more information about the bot'),
     async execute(interaction) {
-        const member = interaction.member;
-        const client = interaction.client;
+        const client = interaction.user.client;
         
         let infoEmbed = new EmbedBuilder()
             .setColor(Colors.White)
             .setTimestamp()
-            .setTitle(member.user.tag)
-            .setThumbnail(member.displayAvatarURL())
+            .setTitle(client.user.tag)
+            .setThumbnail(client.user.displayAvatarURL())
             .addFields(
-                { name: 'Developer', value: `${client.application.owner}`, inline: true },
+                { name: 'Developer', value: `<@${process.env.XKCD_DEV_USERID}>`, inline: true },
                 { name: 'Repository', value: '[https://github.com/DF1229/daily-xkcd](github.com)', inline: true },
                 { name: 'Guilds', value: `${client.guilds.cache.size}`, inline: true },
-                { name: 'uptime', value: `${msToString(client.uptime)}`, inline: true },
+                { name: 'Uptime', value: `${msToString(client.uptime)}`, inline: true },
             );
 
         interaction.reply({ embeds: [infoEmbed], components: [getInviteButton()] });
