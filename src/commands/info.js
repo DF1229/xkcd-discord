@@ -16,7 +16,7 @@ module.exports = {
             .setThumbnail(client.user.displayAvatarURL())
             .addFields(
                 { name: 'Developer', value: `<@${process.env.XKCD_DEV_USERID}>`, inline: true },
-                { name: 'Repository', value: '[https://github.com/DF1229/daily-xkcd](github.com)', inline: true },
+                { name: 'Repository', value: `[https://github.com/DF1229/xkcd-discord](github.com)`, inline: true },
                 { name: 'Guilds', value: `${client.guilds.cache.size}`, inline: true },
                 { name: 'Uptime', value: `${msToString(client.uptime)}`, inline: true },
             );
