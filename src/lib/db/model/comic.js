@@ -45,7 +45,11 @@ const comicSchema = new mongoose.Schema(
             },
             async randomNumber() {
                 try {
-                    return Math.round(Math.random() * await this.estimatedDocumentCount()) + 1;
+                    const num = Math.round(Math.random() * await this.estimatedDocumentCount()) + 1;
+                    const rec = await this.findByNum(num);
+                    
+                    if (!rec) return await this.randomNumber();
+                    else return num;
                 } catch(err) {
                     log.error(err.message);
                     return false;
