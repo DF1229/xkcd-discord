@@ -3,15 +3,21 @@ const { parse } = require('rss-to-json');
 const cheerio = require('cheerio');
 const log = require('./logger');
 
+// Comics with these numbers are not available, because they are interactive.
+const unavailableComics = [404, 1037, 1350, 1416, 1525, 1608, 1663, 2067, 2198];
+
 module.exports = {
     unavailableComics,
     getNewestXkcdNum,
+    getComicFilename,
     getInviteButton,
-    msToString
+    getComicTitle,
+    getComicAttr,
+    fetchComic,
+    msToString,
+    fetchPage,
+    toImgUrl,
 }
-
-// Comics with these numbers are not available, because they are interactive.
-const unavailableComics = [404, 1037, 1350, 1416, 1525, 1608, 1663, 2067, 2198];
 
 async function fetchPage(url) {
     try {
@@ -42,6 +48,11 @@ function getComicFilename(comicAttr) {
     if (!src) throw new Error('No source attribute!');
 
     return src.replace('//imgs.xkcd.com/comics/', '');
+}
+
+
+async function blobToBuffer(blob) {
+    return Buffer.from(await blob.arrayBuffer());
 }
 
 async function fetchComic(url) {

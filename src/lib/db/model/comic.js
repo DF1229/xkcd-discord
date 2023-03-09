@@ -28,7 +28,8 @@ const comicSchema = new mongoose.Schema(
                         alt: data.alt,
                         filename: data.filename,
                         url: data.url,
-                        comic: buffer
+                        comic: buffer,
+                        imgUrl: data.imgUrl
                     });
                 } catch (err) {
                     console.error(err);
@@ -57,7 +58,7 @@ const comicSchema = new mongoose.Schema(
                     imgUrl: comicUrl
                 }
 
-                await ComicModel.new(comicBuffer, comicData);
+                return await this.new(comicBuffer, comicData);
             },
             async numScraped(num) {
                 if (util.unavailableComics.includes(num)) return false;
@@ -70,7 +71,7 @@ const comicSchema = new mongoose.Schema(
                     const numMax = await util.getNewestXkcdNum();
 
                     const num = Math.round(Math.random() * numMax) + 1;
-                    const rec = await this.findByNum(num);
+                    const rec = await this.findOne({ num });
 
                     if (!rec) return await this.randomNumber();
                     else return num;
