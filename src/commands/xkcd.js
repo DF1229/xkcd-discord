@@ -15,13 +15,17 @@ module.exports = {
         ),
     async execute(interaction) {
         log.info(`${interaction.user.tag} used the xkcd command`);
+
         const num = interaction.options.getInteger('number') ?? await ComicModel.randomNumber();
         if (!num) {
             interaction.reply({ content: 'Failed to get a valid comic number.', ephemeral: true });
             return log.error(`Failed to get valid comic number`);
         }
 
-        const comicRec = await ComicModel.findByNum(num);
+        let comicRec;
+        if (!await ComicModel.numScraped(num)) comicRec = await ComicModel.scrape(num);
+        else comicRec = await ComicModel.findOne({ num });
+        
         if (!comicRec) {
             interaction.reply({ content: 'Failed to retreive record from database.', ephemeral: true })
             return log.error(`Failed to retreive comic record with number ${num} from database`);
@@ -35,6 +39,6 @@ module.exports = {
             .setImage(comicRec.imgUrl)
             .setDescription(comicRec.alt);
 
-        await interaction.reply({ embeds: [comicEmbed] });
+        interaction.reply({ embeds: [comicEmbed] });
     }
 };

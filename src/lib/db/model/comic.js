@@ -1,4 +1,4 @@
-const { getNewestXkcdNum } = require('../../util');
+const util = require('../../util');
 const mongoose = require('mongoose');
 const log = require('../../logger');
 
@@ -15,7 +15,7 @@ const comicSchema = new mongoose.Schema(
     },
     {
         // Available on records
-        methods:{
+        methods: {
 
         },
         // Available on table
@@ -30,30 +30,51 @@ const comicSchema = new mongoose.Schema(
                         url: data.url,
                         comic: buffer
                     });
-                } catch(err) {
+                } catch (err) {
                     console.error(err);
                     return false;
                 }
                 return nRec;
             },
-            async findByNum(num) {
-                try {
-                    return await this.findOne({ num });
-                } catch(err) {
-                    log.error(err.message);
-                    return false;
+            async scrape(num) {
+                if (util.unavailableComics.includes(num)) return false;
+
+                const pageUrl = `https://xkcd.com/${num}`
+                const rawHtml = await util.fetchPage(pageUrl);
+
+                const comicAttr = util.getComicAttr(rawHtml);
+                const comicUrl = util.toImgUrl(comicAttr.src);
+                const filename = util.getComicFilename(comicAttr);
+                const comicBuffer = await util.fetchComic(comicUrl);
+                const title = util.getComicTitle(rawHtml);
+
+                const comicData = {
+                    num: num,
+                    title: title,
+                    alt: comicAttr.alt,
+                    filename: filename,
+                    url: pageUrl,
+                    imgUrl: comicUrl
                 }
+
+                await ComicModel.new(comicBuffer, comicData);
+            },
+            async numScraped(num) {
+                if (util.unavailableComics.includes(num)) return false;
+
+                let rec = await this.findOne({ num });
+                return (rec) ? true : false;
             },
             async randomNumber() {
                 try {
-                    const numMax = await getNewestXkcdNum();
+                    const numMax = await util.getNewestXkcdNum();
 
                     const num = Math.round(Math.random() * numMax) + 1;
                     const rec = await this.findByNum(num);
-                    
+
                     if (!rec) return await this.randomNumber();
                     else return num;
-                } catch(err) {
+                } catch (err) {
                     log.error(err.message);
                     return false;
                 }
