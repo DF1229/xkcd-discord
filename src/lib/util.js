@@ -1,8 +1,23 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { parse } = require('rss-to-json');
+const log = require('./logger');
 
 module.exports = {
+    getNewestXkcdNum,
     getInviteButton,
     msToString
+}
+
+async function getNewestXkcdNum() {
+    try {
+        let rss = await parse('https://xkcd.com/rss.xml');
+        let link = rss.items[0].link; // should be a string formatted as https://xkcd.com/1234/
+        return link.replace('https://xkcd.com/', '').replace('/', '');
+
+    } catch(err) {
+        log.error(err.message);
+        return false;   
+    }
 }
 
 function getInviteButton() {

@@ -1,3 +1,4 @@
+const { getNewestXkcdNum } = require('../../util');
 const mongoose = require('mongoose');
 const log = require('../../logger');
 
@@ -45,7 +46,9 @@ const comicSchema = new mongoose.Schema(
             },
             async randomNumber() {
                 try {
-                    const num = Math.round(Math.random() * await this.estimatedDocumentCount()) + 1;
+                    const numMax = await getNewestXkcdNum();
+
+                    const num = Math.round(Math.random() * numMax) + 1;
                     const rec = await this.findByNum(num);
                     
                     if (!rec) return await this.randomNumber();
