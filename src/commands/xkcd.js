@@ -14,6 +14,7 @@ module.exports = {
                 .setMaxValue(2745)
         ),
     async execute(interaction) {
+        log.info(`${interaction.user.tag} used the xkcd command`);
         const num = interaction.options.getInteger('number') ?? await ComicModel.randomNumber();
         if (!num) {
             interaction.reply({ content: 'Failed to get a valid comic number.', ephemeral: true });
@@ -35,6 +36,5 @@ module.exports = {
             .setDescription(comicRec.alt);
 
         await interaction.reply({ embeds: [comicEmbed] });
-        log.info(`${interaction.user.tag} used the xkcd command`);
     }
 };

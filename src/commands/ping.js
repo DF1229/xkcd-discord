@@ -7,6 +7,8 @@ module.exports = {
         .setName('ping')
         .setDescription(`Get some info about the bot's status`),
     async execute(interaction) {
+        log.info(`${interaction.user.tag} used the ping command`);
+        
         const pingStart = new EmbedBuilder()
             .setColor(Colors.White)
             .setTitle('Ping :ping_pong: Pong')
@@ -30,6 +32,5 @@ module.exports = {
             );
 
         await interaction.editReply({ content: null, embeds: [pingResult] });
-        log.info(`${interaction.user.tag} used the ping command`);
     }
 };
