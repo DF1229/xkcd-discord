@@ -7,8 +7,9 @@ module.exports = {
         .setName('info')
         .setDescription('Get more information about the bot'),
     async execute(interaction) {
+        log.info(`${interaction.user.tag} used the info command`);
+
         const client = interaction.user.client;
-        
         let infoEmbed = new EmbedBuilder()
             .setColor(Colors.White)
             .setTimestamp()
@@ -22,6 +23,5 @@ module.exports = {
             );
 
         interaction.reply({ embeds: [infoEmbed], components: [getInviteButton()] });
-        log.info(`${interaction.user.tag} used the info command`);
     }
 };

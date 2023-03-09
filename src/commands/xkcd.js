@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, Colors } = require('discord.js');
 const ComicModel = require('../lib/db/model/comic');
+const util = require('../lib/util');
 const log = require('../lib/logger');
 
 module.exports = {
@@ -11,16 +12,31 @@ module.exports = {
                 .setDescription(`The number of the comic you're looking for, or a random comic if you leave this empty`)
                 .setRequired(false)
                 .setMinValue(1)
-                .setMaxValue(2745)
         ),
     async execute(interaction) {
+        log.info(`${interaction.user.tag} used the xkcd command`);
+
         const num = interaction.options.getInteger('number') ?? await ComicModel.randomNumber();
         if (!num) {
             interaction.reply({ content: 'Failed to get a valid comic number.', ephemeral: true });
             return log.error(`Failed to get valid comic number`);
         }
 
-        const comicRec = await ComicModel.findByNum(num);
+        if (util.unavailableComics.includes(num)) {
+            interaction.reply({ content: `This comic is unavailable through Discord, because it is interactive! Check it out at https://xkcd.com/${num}/`, ephemeral: true });
+            return log.info(`The requested comic #${num} is interactive`);
+        }
+
+        const newestNum = await util.getNewestXkcdNum();
+        if (num > newestNum) {
+            interaction.reply({ content: `This comic has not yet been released, the newest comic is currently #${newestNum}.`, ephemeral: true });
+            return log.info(`The requested comic #${num} had not yet been released`);
+        }
+
+        let comicRec;
+        if (!await ComicModel.numScraped(num)) comicRec = await ComicModel.scrape(num);
+        else comicRec = await ComicModel.findOne({ num });
+        
         if (!comicRec) {
             interaction.reply({ content: 'Failed to retreive record from database.', ephemeral: true })
             return log.error(`Failed to retreive comic record with number ${num} from database`);
@@ -34,7 +50,6 @@ module.exports = {
             .setImage(comicRec.imgUrl)
             .setDescription(comicRec.alt);
 
-        await interaction.reply({ embeds: [comicEmbed] });
-        log.info(`${interaction.user.tag} used the xkcd command`);
+        interaction.reply({ embeds: [comicEmbed] });
     }
 };
