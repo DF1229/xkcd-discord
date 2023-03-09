@@ -36,7 +36,7 @@ module.exports = {
         let comicRec;
         if (!await ComicModel.numScraped(num)) comicRec = await ComicModel.scrape(num);
         else comicRec = await ComicModel.findOne({ num });
-        
+
         if (!comicRec) {
             interaction.reply({ content: 'Failed to retreive record from database.', ephemeral: true })
             return log.error(`Failed to retreive comic record with number ${num} from database`);
@@ -50,6 +50,8 @@ module.exports = {
             .setImage(comicRec.imgUrl)
             .setDescription(comicRec.alt);
 
-        interaction.reply({ embeds: [comicEmbed] });
+        const sent = await interaction.reply({ embeds: [comicEmbed], fetchReply: true });
+        const ms = sent.createdTimestamp - interaction.createdTimestamp;
+        log.debug(`Command took ${ms}ms to complete (${ms/1000}s)`)
     }
 };
