@@ -68,13 +68,9 @@ const comicSchema = new mongoose.Schema(
             },
             async randomNumber() {
                 try {
-                    const numMax = await util.getNewestXkcdNum();
-
-                    const num = Math.round(Math.random() * numMax) + 1;
-                    const rec = await this.findOne({ num });
-
-                    if (!rec) return await this.randomNumber();
-                    else return num;
+                    log.debug('ComicModel.randomNumber()')
+                    const maxNum = await util.getNewestXkcdNum();
+                    return Math.round(Math.random() * maxNum) + 1;
                 } catch (err) {
                     log.error(err.message);
                     return false;
