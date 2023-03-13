@@ -1,6 +1,4 @@
-const util = require('../../util');
 const mongoose = require('mongoose');
-const log = require('../../logger');
 
 const logSchema = new mongoose.Schema(
     {
