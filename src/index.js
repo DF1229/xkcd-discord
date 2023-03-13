@@ -1,3 +1,4 @@
+require('dotenv').config({ path: '../.env'});
 require('./lib/db/database').connect();
 const log = require('./lib/logger');
 log.info('Starting up...');
@@ -5,7 +6,6 @@ log.info('Starting up...');
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
-require('dotenv').config({ path: '../.env'});
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.commands = new Collection();
