@@ -7,6 +7,7 @@ const log = require('./logger');
 const unavailableComics = [404, 1037, 1350, 1416, 1525, 1608, 1663, 2067, 2198];
 
 module.exports = {
+    getCollectionSizeAsString,
     unavailableComics,
     getNewestXkcdNum,
     getComicFilename,
@@ -17,6 +18,21 @@ module.exports = {
     msToString,
     fetchPage,
     toImgUrl,
+}
+
+async function getCollectionSizeAsString(dbModel) {
+    const sizeBytes = (await dbModel.collection.stats()).storageSize;
+    const sizeKb = sizeBytes / 1024;
+    const sizeMb = sizeKb / 1024;
+    const sizeGb = sizeMb / 1024;
+
+    let result;
+    if (sizeGb >= 1) result = `${Math.round(sizeGb)}gb`;
+    else if (sizeMb >= 1) result = `${Math.round(sizeMb)}mb`;
+    else if (sizeKb >= 1) result = `${Math.round(sizeKb)}kb`;
+    else result = `${Math.round(sizeBytes)}b`;
+
+    return result;
 }
 
 async function fetchPage(url) {
