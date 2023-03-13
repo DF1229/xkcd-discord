@@ -1,7 +1,7 @@
 require('dotenv').config({ path: '../.env' });
 
 const { REST, Routes } = require('discord.js');
-const { XKCD_DISCORD_TOKEN, XKCD_CLIENTID, XKCD_DEV_GUILDID } = process.env;
+const { XKCD_DISCORD_TOKEN, XKCD_CLIENTID } = process.env;
 const fs = require('node:fs');
 
 const commands = [];
@@ -18,7 +18,7 @@ const rest = new REST({ version: '10' }).setToken(XKCD_DISCORD_TOKEN);
     try {
         console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
-        const data = await rest.put(Routes.applicationGuildCommands(XKCD_CLIENTID, XKCD_DEV_GUILDID), { body: commands });
+        const data = await rest.put(Routes.applicationCommands(XKCD_CLIENTID), { body: commands });
 
         console.log(`Successfully reloaded ${data.length} application (/) commands.`);
     } catch (error) {
