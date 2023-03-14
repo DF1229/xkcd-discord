@@ -21,8 +21,10 @@ module.exports = {
         log.info(`${interaction.user.tag} used the xkcd command`);
 
         let num;
+        const numArg = interaction.options.getInteger('number');
         if (interaction.options.getString('latest') == 'true') num = await util.getNewestXkcdNum();
-        else interaction.options.getInteger('number') ?? await ComicModel.randomNumber();
+        else if (numArg) num = numArg;
+        else num = await ComicModel.randomNumber();
 
         if (!num) {
             interaction.reply({ content: 'Failed to get a valid comic number.', ephemeral: true });
