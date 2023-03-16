@@ -11,6 +11,14 @@ module.exports = {
         log.info(`${interaction.user.tag} used the stats command`);
 
         const client = interaction.client;
+        const guilds = (await client.guilds.fetch()).values();
+        
+        let memberCount = 0;
+        for (const rawGuild of guilds) {
+            const guild = await rawGuild.fetch();
+            memberCount += guild.memberCount;
+        }
+
         let statsEmbed = new EmbedBuilder()
             .setColor(Colors.White)
             .setTimestamp()
@@ -20,7 +28,8 @@ module.exports = {
                 { name: 'Joined servers', value: `${client.guilds.cache.size}`, inline: true },
                 { name: 'Available channels', value: `${client.channels.cache.size}`, inline: true },
                 { name: 'Served users', value: `${client.users.cache.size}`, inline: true },
-                { name: 'Uptime', value: `${msToString(client.uptime)}`, inline: false },
+                { name: 'Total members', value: `${memberCount}`, inline: true },
+                { name: 'Uptime', value: `${msToString(client.uptime)}`, inline: true },
             )
         interaction.reply({ embeds: [statsEmbed] });
     }
