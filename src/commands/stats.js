@@ -21,7 +21,6 @@ module.exports = {
                 { name: 'Available channels', value: `${client.channels.cache.size}`, inline: true },
                 { name: 'Served users', value: `${client.users.cache.size}`, inline: true },
                 { name: 'Uptime', value: `${msToString(client.uptime)}`, inline: false },
-                // { name: 'Comic storage size: ' }
             )
         interaction.reply({ embeds: [statsEmbed] });
     }
