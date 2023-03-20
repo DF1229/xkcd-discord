@@ -25,10 +25,10 @@ module.exports = {
             .setTitle('Statistics')
             .addFields(
                 { name: 'Comics saved', value: `${await ComicModel.estimatedDocumentCount()} (${await getCollectionSizeAsString(ComicModel)})`, inline: false },
-                { name: 'Joined servers', value: `${client.guilds.cache.size}`, inline: true },
-                { name: 'Available channels', value: `${client.channels.cache.size}`, inline: true },
-                { name: 'Served users', value: `${client.users.cache.size}`, inline: true },
+                { name: 'Total servers', value: `${client.guilds.cache.size}`, inline: true },
+                { name: 'Total channels', value: `${client.channels.cache.size}`, inline: true },
                 { name: 'Total members', value: `${memberCount}`, inline: true },
+                { name: 'Served users', value: `${client.users.cache.size}`, inline: true },
                 { name: 'Uptime', value: `${msToString(client.uptime)}`, inline: true },
             )
         interaction.reply({ embeds: [statsEmbed] });
