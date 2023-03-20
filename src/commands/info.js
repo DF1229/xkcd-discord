@@ -5,7 +5,7 @@ const log = require('../lib/logger');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('info')
-        .setDescription('Get more information about the bot'),
+        .setDescription('Some info on what xkcd is'),
     async execute(interaction) {
         log.info(`${interaction.user.tag} used the info command`);
 
