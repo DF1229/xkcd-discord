@@ -52,7 +52,7 @@ const comicSchema = new mongoose.Schema(
                 const comicData = {
                     num: num,
                     title: title,
-                    alt: comicAttr.alt,
+                    alt: comicAttr.title, // Misleading attribute name, which is actually the comic's description
                     filename: filename,
                     url: pageUrl,
                     imgUrl: comicUrl
