@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, Colors } = require('discord.js');
+const UsersModel = require('../lib/db/model/users');
 const ComicModel = require('../lib/db/model/comic');
 const { msToString, getCollectionSizeAsString } = require('../lib/util');
 const log = require('../lib/logger');
@@ -28,7 +29,7 @@ module.exports = {
                 { name: 'Total servers', value: `${client.guilds.cache.size}`, inline: true },
                 { name: 'Total channels', value: `${client.channels.cache.size}`, inline: true },
                 { name: 'Total members', value: `${memberCount}`, inline: true },
-                { name: 'Served users', value: `${client.users.cache.size}`, inline: true },
+                { name: 'Served users', value: `${await UsersModel.estimatedDocumentCount()}`, inline: true },
                 { name: 'Uptime', value: `${msToString(client.uptime)}`, inline: true },
             )
         interaction.reply({ embeds: [statsEmbed] });
