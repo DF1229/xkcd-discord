@@ -1,3 +1,4 @@
+const UsersModel = require('../lib/db/model/users');
 const { Events } = require('discord.js');
 const log = require('../lib/logger');
 
@@ -8,7 +9,6 @@ module.exports = {
         if (!interaction.isChatInputCommand()) return;
 
         const command = interaction.client.commands.get(interaction.commandName);
-
         if (!command)  {
             log.error(`No command matching ${interaction.commandName} was found.`);
             return interaction.reply({ content: 'Whoops, command not found!', ephemeral: true })
@@ -25,6 +25,17 @@ module.exports = {
             }
             console.error(error);
             log.error(error);
+        }
+
+        try {
+            const user = interaction.user;
+            let xRec = await UsersModel.findOne({ userId: user.id });
+            if (!xRec) {
+                const nRec = await UsersModel.new(user.id, user.username);
+                if (!nRec) log.error(`Failed to register user interaction for user ${user.username} (${user.id})`);
+            }
+        } catch (err) {
+            log.error(err.message);
         }
     }
 }
