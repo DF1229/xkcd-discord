@@ -1,5 +1,5 @@
 {
-  "name": "daily-xkcd",
+  "name": "xkcd-discord",
   "version": "1.0.0",
   "description": "A simple Discord bot to get an xkcd comic per day, or on request.",
   "main": "index.js",
