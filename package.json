@@ -1,5 +1,5 @@
 {
-  "name": "daily-xkcd",
+  "name": "xkcd-discord",
   "version": "1.0.0",
   "description": "A simple Discord bot to get an xkcd comic per day, or on request.",
   "main": "index.js",
@@ -14,9 +14,9 @@
   "license": "MIT",
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
-    "discord.js": "^14.11.0",
     "dotenv": "^16.3.1",
-    "mongoose": "^7.2.2",
+    "discord.js": "^14.13.0",
+    "mongoose": "^7.5.0",
     "rss-to-json": "^2.1.1"
   }
 }
