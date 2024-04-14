@@ -4,7 +4,7 @@ const cheerio = require('cheerio');
 const log = require('./logger');
 
 // Comics with these numbers are not available, because they are interactive.
-const unavailableComics = [404, 1037, 1350, 1416, 1525, 1608, 1663, 2067, 2198];
+const unavailableComics = [404, 1037, 1350, 1416, 1525, 1608, 1663, 2067, 2198, 2916];
 
 module.exports = {
     getCollectionSizeAsString,
