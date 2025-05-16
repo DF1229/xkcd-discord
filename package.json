@@ -16,7 +16,7 @@
     "cheerio": "^1.0.0-rc.12",
     "dotenv": "^16.4.5",
     "discord.js": "^14.14.1",
-    "mongoose": "^8.9.5",
+    "mongoose": "^8.14.3",
     "rss-to-json": "^2.1.1"
   }
 }
